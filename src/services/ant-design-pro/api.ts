@@ -1,14 +1,67 @@
 // @ts-ignore
 /* eslint-disable */
+import getToken from '@/utils/get-token';
 import { request } from 'umi';
 
 /** 获取当前的用户 GET /api/currentUser */
-export async function currentUser(options?: { [key: string]: any }) {
+export async function currentUser(options?: Record<string, any>) {
   return request<{
     data: API.CurrentUser;
   }>('/api/currentUser', {
     method: 'GET',
     ...(options || {}),
+  });
+}
+
+/**
+ *
+ * @param token 登陆下发的 token
+ * @returns 登陆成功后的用户信息
+ */
+export async function userInfo(token: string) {
+  return request<API.UserInfoResult>('/api/user/info/', {
+    method: 'GET',
+    headers: {
+      token,
+    },
+  });
+}
+
+/**
+ *
+ * @param params.token token
+ * @param params.username 用户名
+ * @param params.password 密码
+ * @returns
+ */
+export async function registerUser(params: API.RegisterParams) {
+  const { token = '' } = params;
+  delete params.token;
+  return request<API.RegisterResult>('/api/user/register', {
+    method: 'POST',
+    headers: {
+      token,
+    },
+    data: params,
+  });
+}
+
+export async function changePassword(params: { password: string }) {
+  return request<API.changePasswordResult>('/api/user/modifyPWD', {
+    method: 'POST',
+    data: params,
+    headers: {
+      token: getToken(),
+    },
+  });
+}
+
+export async function userList() {
+  return request<API.UserListResult>(`/api/user/list`, {
+    method: 'GET',
+    headers: {
+      token: getToken(),
+    },
   });
 }
 
@@ -22,7 +75,7 @@ export async function outLogin(options?: { [key: string]: any }) {
 
 /** 登录接口 POST /api/login/account */
 export async function login(body: API.LoginParams, options?: { [key: string]: any }) {
-  return request<API.LoginResult>('/api/login/account', {
+  return request<API.LoginResult>('/api/user/login', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

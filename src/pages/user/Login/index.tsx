@@ -1,10 +1,12 @@
-import { LockOutlined, UserOutlined } from '@ant-design/icons';
-import { Alert, message, Tabs } from 'antd';
-import React, { useState } from 'react';
-import { ProFormText, LoginForm } from '@ant-design/pro-form';
-import { useIntl, history, FormattedMessage, useModel } from 'umi';
 import Footer from '@/components/Footer';
+import { RespCodeType } from '@/constant';
 import { login } from '@/services/ant-design-pro/api';
+import getToken from '@/utils/get-token';
+import { LockOutlined, UserOutlined } from '@ant-design/icons';
+import { LoginForm, ProFormText } from '@ant-design/pro-form';
+import { Alert, message, Tabs } from 'antd';
+import React from 'react';
+import { FormattedMessage, history, useIntl, useModel } from 'umi';
 import styles from './index.less';
 
 const LoginMessage: React.FC<{
@@ -21,33 +23,45 @@ const LoginMessage: React.FC<{
 );
 
 const Login: React.FC = () => {
-  const [userLoginState, setUserLoginState] = useState<API.LoginResult>({});
-
   const { initialState, setInitialState } = useModel('@@initialState');
-
   const intl = useIntl();
 
+  const token = getToken();
+
   const fetchUserInfo = async () => {
-    const userInfo = await initialState?.fetchUserInfo?.();
+    const userInfo = await initialState?.fetchUserInfo?.(token);
     if (userInfo) {
       await setInitialState((s) => ({
         ...s,
         currentUser: userInfo,
+        token,
       }));
     }
   };
+  React.useEffect(() => {
+    (async function () {
+      if (token) {
+        console.log('token', token);
+        await fetchUserInfo();
+        history.push('/welcome');
+      }
+    })();
+  }, [token]);
 
   const handleSubmit = async (values: API.LoginParams) => {
     try {
       // 登录
       const msg = await login({ ...values });
-      if (msg.status === 'ok') {
-        const defaultLoginSuccessMessage = intl.formatMessage({
-          id: 'pages.login.success',
-          defaultMessage: '登录成功！',
-        });
-        message.success(defaultLoginSuccessMessage);
+      console.log(msg);
+      if (msg.code === RespCodeType.fail) {
+        message.error(msg.msg);
+        return;
+      }
+      if (msg.code === RespCodeType.success) {
+        message.success('登陆成功');
+        window.localStorage.setItem('token', msg.data);
         await fetchUserInfo();
+
         /** 此方法会跳转到 redirect 参数所在的位置 */
         if (!history) return;
         const { query } = history.location;
@@ -55,10 +69,9 @@ const Login: React.FC = () => {
         history.push(redirect || '/');
         return;
       }
-      console.log(msg);
       // 如果失败去设置用户错误信息
-      setUserLoginState(msg);
     } catch (error) {
+      console.log(error);
       const defaultLoginFailureMessage = intl.formatMessage({
         id: 'pages.login.failure',
         defaultMessage: '登录失败，请重试！',
@@ -66,7 +79,6 @@ const Login: React.FC = () => {
       message.error(defaultLoginFailureMessage);
     }
   };
-  const { status, type: loginType } = userLoginState;
 
   return (
     <div className={styles.container}>

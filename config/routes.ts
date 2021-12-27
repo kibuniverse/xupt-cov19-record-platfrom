@@ -18,11 +18,19 @@
       },
     ],
   },
+
   {
     path: '/welcome',
     name: 'welcome',
     icon: 'smile',
     component: './Welcome',
+  },
+  {
+    path: '/create-user',
+    name: '创建管理员',
+    icon: 'UserAddOutlined',
+    component: './user/Create',
+    access: 'canCreateUser',
   },
   {
     path: '/admin',
@@ -43,10 +51,23 @@
     ],
   },
   {
+    path: '/manage',
+    name: '管理用户',
+    icon: 'UserSwitchOutlined',
+    access: 'canCreateUser',
+    component: './Manage',
+  },
+  {
     name: 'list.table-list',
     icon: 'table',
     path: '/list',
     component: './TableList',
+  },
+  {
+    path: 'user-info',
+    icon: 'UserOutlined',
+    name: '个人信息',
+    component: './UserInfo',
   },
   {
     path: '/',

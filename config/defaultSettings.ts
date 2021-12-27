@@ -6,7 +6,6 @@ const Settings: LayoutSettings & {
 } = {
   headerTheme: 'light',
   navTheme: 'light',
-  // 拂晓蓝
   primaryColor: '#1890ff',
   layout: 'mix',
   contentWidth: 'Fluid',
@@ -15,7 +14,6 @@ const Settings: LayoutSettings & {
   colorWeak: false,
   title: '西邮防疫信息管理平台',
   pwa: false,
-  iconfontUrl: '',
 };
 
 export default Settings;
