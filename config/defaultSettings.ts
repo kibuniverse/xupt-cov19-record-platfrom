@@ -14,6 +14,9 @@ const Settings: LayoutSettings & {
   colorWeak: false,
   title: '西邮防疫信息管理平台',
   pwa: false,
+  menu: {
+    locale: false,
+  },
 };
 
 export default Settings;

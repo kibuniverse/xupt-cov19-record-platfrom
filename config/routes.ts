@@ -25,13 +25,7 @@
     icon: 'smile',
     component: './Welcome',
   },
-  {
-    path: '/create-user',
-    name: '创建管理员',
-    icon: 'UserAddOutlined',
-    component: './user/Create',
-    access: 'canCreateUser',
-  },
+
   {
     path: '/admin',
     name: 'admin',
@@ -55,7 +49,21 @@
     name: '管理用户',
     icon: 'UserSwitchOutlined',
     access: 'canCreateUser',
-    component: './Manage',
+    routes: [
+      {
+        path: '/manage/user-list',
+        name: '管理员列表',
+        component: './Manage',
+      },
+      {
+        path: '/manage/create-user',
+        name: '创建管理员',
+        component: './Manage/Create',
+      },
+      {
+        component: './404',
+      },
+    ],
   },
   {
     name: 'list.table-list',
