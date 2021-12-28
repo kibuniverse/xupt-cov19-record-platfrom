@@ -1,52 +1,35 @@
 import Footer from '@/components/Footer';
 import { RespCodeType } from '@/constant';
-import { login } from '@/services/ant-design-pro/api';
+import { getUserInfo, login } from '@/services/ant-design-pro/api';
 import getToken from '@/utils/get-token';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { LoginForm, ProFormText } from '@ant-design/pro-form';
-import { Alert, message, Tabs } from 'antd';
+import { message, Tabs } from 'antd';
 import React from 'react';
 import { FormattedMessage, history, useIntl, useModel } from 'umi';
 import styles from './index.less';
 
-const LoginMessage: React.FC<{
-  content: string;
-}> = ({ content }) => (
-  <Alert
-    style={{
-      marginBottom: 24,
-    }}
-    message={content}
-    type="error"
-    showIcon
-  />
-);
-
 const Login: React.FC = () => {
-  const { initialState, setInitialState } = useModel('@@initialState');
+  const { setInitialState } = useModel('@@initialState');
   const intl = useIntl();
 
   const token = getToken();
 
-  const fetchUserInfo = async () => {
-    const userInfo = await initialState?.fetchUserInfo?.(token);
-    if (userInfo) {
-      await setInitialState((s) => ({
-        ...s,
-        currentUser: userInfo,
-        token,
-      }));
-    }
-  };
+  // judge localStorage token and redirect to welcome page
   React.useEffect(() => {
     (async function () {
       if (token) {
         console.log('token', token);
-        await fetchUserInfo();
+        const userInfo: any = (await getUserInfo(token)) || {};
+        await setInitialState((s) => ({
+          ...s,
+          currentUser: userInfo.data,
+          token,
+        }));
         history.push('/welcome');
       }
     })();
-  }, [token]);
+  }, [setInitialState, token]);
 
   const handleSubmit = async (values: API.LoginParams) => {
     try {
@@ -60,8 +43,13 @@ const Login: React.FC = () => {
       if (msg.code === RespCodeType.success) {
         message.success('登陆成功');
         window.localStorage.setItem('token', msg.data);
-        await fetchUserInfo();
-
+        // 类型不全，暂时用 any 代替
+        const userInfo: any = (await getUserInfo(msg.data)) || {};
+        await setInitialState((s) => ({
+          ...s,
+          currentUser: userInfo.data,
+          token,
+        }));
         /** 此方法会跳转到 redirect 参数所在的位置 */
         if (!history) return;
         const { query } = history.location;
@@ -103,14 +91,6 @@ const Login: React.FC = () => {
             />
           </Tabs>
 
-          {status === 'error' && loginType === 'account' && (
-            <LoginMessage
-              content={intl.formatMessage({
-                id: 'pages.login.accountLogin.errorMessage',
-                defaultMessage: '账户或密码错误(admin/ant.design)',
-              })}
-            />
-          )}
           <>
             <ProFormText
               name="username"

@@ -5,10 +5,11 @@ import type { Settings as LayoutSettings } from '@ant-design/pro-layout';
 import { PageLoading, SettingDrawer } from '@ant-design/pro-layout';
 import type { RunTimeLayoutConfig } from 'umi';
 import { history, Link } from 'umi';
-import { userInfo } from './services/ant-design-pro/api';
+import { loginPath } from './constant';
+import { getUserInfo } from './services/ant-design-pro/api';
+import getToken from './utils/get-token';
 
 const isDev = process.env.NODE_ENV === 'development';
-const loginPath = '/user/login';
 
 /** 获取用户信息比较慢的时候会展示一个 loading */
 export const initialStateConfig = {
@@ -24,14 +25,12 @@ export async function getInitialState(): Promise<{
   loading?: boolean;
   fetchUserInfo?: (token: string) => Promise<API.CurrentUser | undefined>;
 }> {
-  const token = window.localStorage.getItem('token');
   const fetchUserInfo = async () => {
     try {
-      const msg = await userInfo(token);
-      console.log(msg);
+      const token = getToken();
+      const msg = await getUserInfo(token);
       return msg.data;
     } catch (error) {
-      console.log('判断了');
       history.push(loginPath);
     }
     return undefined;
@@ -57,7 +56,7 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
     rightContentRender: () => <RightContent />,
     disableContentMargin: false,
     waterMarkProps: {
-      content: initialState?.currentUser?.name,
+      content: initialState?.currentUser?.username,
     },
     footerRender: () => <Footer />,
     onPageChange: () => {

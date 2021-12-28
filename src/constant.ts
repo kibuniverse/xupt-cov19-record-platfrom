@@ -4,3 +4,5 @@ export enum RespCodeType {
 }
 
 export const loginPath = '/user/login';
+
+export const platformName = '稀有';

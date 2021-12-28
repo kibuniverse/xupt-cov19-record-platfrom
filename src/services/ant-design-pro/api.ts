@@ -18,7 +18,7 @@ export async function currentUser(options?: Record<string, any>) {
  * @param token 登陆下发的 token
  * @returns 登陆成功后的用户信息
  */
-export async function userInfo(token: string) {
+export async function getUserInfo(token: string) {
   return request<API.UserInfoResult>('/api/user/info/', {
     method: 'GET',
     headers: {
