@@ -34,7 +34,7 @@ const Welcome: React.FC = () => {
           }}
         />
         <Typography.Text strong>
-          <FormattedMessage id="pages.welcome.advancedComponent" defaultMessage="Advanced Form" />{' '}
+          <FormattedMessage id="pages.welcome.advancedComponent" defaultMessage="Advanced Form" />
           <a
             href="https://procomponents.ant.design/components/table"
             rel="noopener noreferrer"
@@ -50,7 +50,7 @@ const Welcome: React.FC = () => {
             marginBottom: 12,
           }}
         >
-          <FormattedMessage id="pages.welcome.advancedLayout" defaultMessage="Advanced layout" />{' '}
+          <FormattedMessage id="pages.welcome.advancedLayout" defaultMessage="Advanced layout" />
           <a
             href="https://procomponents.ant.design/components/layout"
             rel="noopener noreferrer"
