@@ -25,24 +25,6 @@
     icon: 'smile',
     component: './Welcome',
   },
-
-  {
-    path: '/admin',
-    name: 'admin',
-    icon: 'crown',
-    component: './Admin',
-    routes: [
-      {
-        path: '/admin/sub-page',
-        name: 'sub-page',
-        icon: 'smile',
-        component: './Welcome',
-      },
-      {
-        component: './404',
-      },
-    ],
-  },
   {
     path: '/manage',
     name: '管理用户',

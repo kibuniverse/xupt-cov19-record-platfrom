@@ -39,17 +39,15 @@ declare namespace API {
 
   type UserListResult = Response<UserInfo[]>;
 
+  type UserDeleteResult = Response<Boolean>;
+
   type RegisterParams = {
     username: string;
     password: string;
     token?: string;
   };
 
-  type RegisterResult = {
-    code: number;
-    msg: string;
-    data: boolean;
-  };
+  type RegisterResult = Response<Boolean>;
 
   type changePasswordResult = {
     code: number;

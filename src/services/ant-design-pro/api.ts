@@ -55,10 +55,27 @@ export async function changePassword(params: { password: string }) {
     },
   });
 }
-
+/**
+ *
+ * @returns 获取管理员列表 Array<API.UserListResult>
+ */
 export async function userList() {
   return request<API.UserListResult>(`/api/user/list`, {
     method: 'GET',
+    headers: {
+      token: getToken(),
+    },
+  });
+}
+/**
+ *
+ * @param params.userId userId
+ * @function 删除用户
+ */
+export async function userDelete(params: { userId: number }) {
+  return request<API.UserDeleteResult>(`/api/user/delete`, {
+    method: 'POST',
+    data: params,
     headers: {
       token: getToken(),
     },
