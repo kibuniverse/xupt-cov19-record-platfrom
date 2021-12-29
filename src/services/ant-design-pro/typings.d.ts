@@ -49,6 +49,15 @@ declare namespace API {
 
   type RegisterResult = Response<Boolean>;
 
+  type UpdateUserInfoParams = {
+    userId: number;
+    phone?: string;
+    department?: string;
+    role?: string;
+  };
+
+  type UpdateUserInfoResult = Response<Boolean>;
+
   type changePasswordResult = {
     code: number;
     msg: string;

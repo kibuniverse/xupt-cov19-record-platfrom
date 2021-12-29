@@ -55,6 +55,16 @@ export async function changePassword(params: { password: string }) {
     },
   });
 }
+
+export async function updateUserInfo(params: API.UpdateUserInfoParams) {
+  return request<API.UpdateUserInfoResult>('/api/user/modify', {
+    method: 'POST',
+    data: params,
+    headers: {
+      token: getToken(),
+    },
+  });
+}
 /**
  *
  * @returns 获取管理员列表 Array<API.UserListResult>
