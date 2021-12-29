@@ -1,9 +1,9 @@
-import { RespCodeType } from '@/constant';
+import { DepartmentsEnum, RespCodeType } from '@/constant';
 import { registerUser } from '@/services/ant-design-pro/api';
 import getToken from '@/utils/get-token';
-import { verifyPassword, verifyUserName } from '@/utils/verify';
+import { verifyPassword, verifyPhone, verifyUserName } from '@/utils/verify';
 import type { ProFormInstance } from '@ant-design/pro-form';
-import ProForm, { ProFormText } from '@ant-design/pro-form';
+import ProForm, { ProFormDigit, ProFormSelect, ProFormText } from '@ant-design/pro-form';
 import { PageContainer } from '@ant-design/pro-layout';
 import { Card, message } from 'antd';
 import * as React from 'react';
@@ -16,6 +16,11 @@ const CreateUser: React.FC = () => {
       message.error('用户名或密码长度不能超过20个字符');
       return;
     }
+    if (!verifyPhone(v.phone)) {
+      message.error('手机号不符合要求');
+      return;
+    }
+    console.log(v);
     v.token = getToken();
     const res = await registerUser(v as any);
     if (res?.code === RespCodeType.success) {
@@ -43,6 +48,21 @@ const CreateUser: React.FC = () => {
             name="password"
             label="密码"
             rules={[{ required: true, message: '请输入密码' }]}
+          />
+          <ProFormSelect
+            width="md"
+            name="department"
+            label="学院"
+            placeholder="请选择成员所属学院"
+            valueEnum={DepartmentsEnum}
+            rules={[{ required: true, message: '请选择该成员所属学院' }]}
+          />
+          <ProFormDigit
+            width="md"
+            name="phone"
+            label="手机号"
+            placeholder="请输入手机号"
+            rules={[{ required: true, message: '请输入手机号' }]}
           />
         </ProForm>
       </Card>

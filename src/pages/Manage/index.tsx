@@ -25,6 +25,14 @@ const Manager: React.FC = () => {
       key: 'username',
     },
     {
+      title: '手机号',
+      dataIndex: 'phone',
+    },
+    {
+      title: '学院',
+      dataIndex: 'department',
+    },
+    {
       title: '操作',
       dataIndex: 'action',
       key: 'action',
