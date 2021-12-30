@@ -163,3 +163,23 @@ export async function removeRule(options?: { [key: string]: any }) {
     ...(options || {}),
   });
 }
+
+// 用户信息导出
+export async function downloadAllUserInfo() {
+  return request<API.DownloadAllUserInfoResult>('/api/red_yellow_people_info/getAll', {
+    method: 'GET',
+    headers: {
+      token: getToken(),
+    },
+  });
+}
+
+export async function uploadUserExcel(params: API.UploadUserInfoParams) {
+  return request<API.UploadUserExcelResult>('/api/test_people_info/upload', {
+    method: 'POST',
+    data: params,
+    headers: {
+      token: getToken(),
+    },
+  });
+}

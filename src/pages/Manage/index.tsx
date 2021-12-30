@@ -1,4 +1,4 @@
-import { DepartmentsEnum, RespCodeType } from '@/constant';
+import { departments, DepartmentsEnum, RespCodeType } from '@/constant';
 import { updateUserInfo, userDelete, userList } from '@/services/ant-design-pro/api';
 import type { ProFormInstance } from '@ant-design/pro-form';
 import { ProFormSelect, ProFormText } from '@ant-design/pro-form';
@@ -37,6 +37,8 @@ const Manager: React.FC = () => {
     {
       title: '学院',
       dataIndex: 'department',
+      filters: departments.map((item) => ({ text: DepartmentsEnum[item], value: item })),
+      onFilter: (value: any, record: { department: string }) => record?.department === value,
       render: (text: string) => <div>{DepartmentsEnum[text]}</div>,
     },
     {

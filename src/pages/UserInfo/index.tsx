@@ -22,7 +22,7 @@ const UserInfo: React.FC = () => {
       <Row gutter={16}>
         <Col span={8}>
           <Card title={<h3>个人信息</h3>} bordered={false}>
-            <Descriptions layout="horizontal">
+            <Descriptions>
               <Descriptions.Item label="用户名">{currentUser?.username}</Descriptions.Item>
               <Descriptions.Item label="手机号">{currentUser?.phone}</Descriptions.Item>
               <Descriptions.Item label="所属学院">

@@ -70,6 +70,15 @@ declare namespace API {
     data: string;
   };
 
+  type DownloadAllUserInfoResult = Response<string>;
+
+  type UploadUserInfoParams = {
+    file: FormData;
+    time: string;
+  };
+
+  type UploadUserExcelResult = Response<Boolean>;
+
   type PageParams = {
     current?: number;
     pageSize?: number;

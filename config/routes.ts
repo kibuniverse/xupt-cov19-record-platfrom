@@ -26,6 +26,12 @@
     component: './Welcome',
   },
   {
+    path: '/upload',
+    name: 'upload',
+    icon: 'smile',
+    component: './Upload/User',
+  },
+  {
     path: '/manage',
     name: '管理用户',
     icon: 'UserSwitchOutlined',
