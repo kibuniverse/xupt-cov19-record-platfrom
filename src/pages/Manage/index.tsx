@@ -48,6 +48,7 @@ const Manager: React.FC = () => {
           <div className="table-operate">
             <div className="item">
               <Button
+                type="link"
                 onClick={() => {
                   setModalVisible(true);
                   setSelectUserInfo(record);
@@ -61,7 +62,6 @@ const Manager: React.FC = () => {
               <Popconfirm
                 title="确认删除该用户吗?"
                 onConfirm={async () => {
-                  console.log('删除 ' + record.userId);
                   const ans = await userDelete({ userId: record.userId as number });
                   if (ans.code === RespCodeType.success) {
                     message.success('删除成功');
@@ -69,7 +69,9 @@ const Manager: React.FC = () => {
                   }
                 }}
               >
-                <Button danger>删除</Button>
+                <Button type="text" danger>
+                  删除
+                </Button>
               </Popconfirm>
             </div>
           </div>
